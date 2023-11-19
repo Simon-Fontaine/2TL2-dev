@@ -31,31 +31,31 @@ class Job(enum.Enum):
 
 class Settings:
     def __init__(
-        self,
-        simulation_speed: float = 1.0,
-        initial_food_quantity: float = 30000,
-        initial_ant_quantity: int = 100,
-        ant_avg_age: int = 90,
-        ant_avg_age_variation: int = 20,
-        ant_worker_chance: float = 0.95,
-        min_food_multiplier: float = 0.5,
-        max_food_multiplier: float = 1.5,
-        ant_hunger: float = 0.3,
-        ant_random_death_chance: float = 0.01,
-        queen_avg_age: int = 5 * YEAR,
-        queen_avg_age_variation: int = 1 * YEAR,
-        queen_hunger: float = 10,
-        queen_laying_rate: int = 5,
-        queen_avg_eggs: int = 500,
-        queen_avg_egg_variation: int = 150,
-        egg_avg_age: int = 2 * WEEK,
-        egg_avg_age_variation: int = 1 * WEEK,
-        egg_hunger: float = 0.1,
-        egg_evolve_chance: float = 0.9,
-        queen_avg_egg_age: int = 2 * MONTH,
-        queen_avg_egg_age_variation: int = 2 * WEEK,
-        queen_egg_hunger: float = 1,
-        queen_egg_evolve_chance: float = 0.5,
+            self,
+            simulation_speed: float = 1.0,
+            initial_food_quantity: float = 30000,
+            initial_ant_quantity: int = 100,
+            ant_avg_age: int = 90,
+            ant_avg_age_variation: int = 20,
+            ant_worker_chance: float = 0.95,
+            min_food_multiplier: float = 0.5,
+            max_food_multiplier: float = 1.5,
+            ant_hunger: float = 0.3,
+            ant_random_death_chance: float = 0.01,
+            queen_avg_age: int = 5 * YEAR,
+            queen_avg_age_variation: int = 1 * YEAR,
+            queen_hunger: float = 10,
+            queen_laying_rate: int = 5,
+            queen_avg_eggs: int = 500,
+            queen_avg_egg_variation: int = 150,
+            egg_avg_age: int = 2 * WEEK,
+            egg_avg_age_variation: int = 1 * WEEK,
+            egg_hunger: float = 0.1,
+            egg_evolve_chance: float = 0.9,
+            queen_avg_egg_age: int = 2 * MONTH,
+            queen_avg_egg_age_variation: int = 2 * WEEK,
+            queen_egg_hunger: float = 1,
+            queen_egg_evolve_chance: float = 0.5,
     ):
         self.simulation_speed = simulation_speed
         self.initial_food_quantity = initial_food_quantity
@@ -135,8 +135,8 @@ class Ant:
             self._age += 1
             self._food.remove(self._settings.ant_hunger)
             if (
-                self._age > self._max_age
-                or random.random() < self._settings.ant_random_death_chance
+                    self._age > self._max_age
+                    or random.random() < self._settings.ant_random_death_chance
             ):
                 self._state = State.DEAD
         else:
@@ -215,12 +215,12 @@ class Queen(Ant):
         if self.is_alive and self._food.quantity >= self._settings.queen_hunger:
             self._food.remove(self._settings.queen_hunger)
             for _ in range(
-                random.randint(
-                    self._settings.queen_avg_eggs
-                    - self._settings.queen_avg_egg_variation,
-                    self._settings.queen_avg_eggs
-                    + self._settings.queen_avg_egg_variation,
-                )
+                    random.randint(
+                        self._settings.queen_avg_eggs
+                        - self._settings.queen_avg_egg_variation,
+                        self._settings.queen_avg_eggs
+                        + self._settings.queen_avg_egg_variation,
+                    )
             ):
                 new_eggs.append(Egg(self._settings, self._food))
         return new_eggs
@@ -316,7 +316,7 @@ class Colony:
 
 
 def create_table(
-    header_style="bold cyan", column_styles=("bold blue", "yellow")
+        header_style="bold cyan", column_styles=("bold blue", "yellow")
 ) -> Table:
     """
     Crée un tableau avec les styles donnés
@@ -545,7 +545,7 @@ def run_simulation(console: Console, new_simulation: bool = True, file_id: str =
 
 
 def show_options(
-    console: Console, no_saves: bool = False, invalid_choice: bool = False
+        console: Console, no_saves: bool = False, invalid_choice: bool = False
 ):
     """
     Montre les options disponibles à l'utilisateur
@@ -589,6 +589,9 @@ def show_options(
 
 
 def main(no_saves: bool = False, invalid_choice: bool = False):
+    """
+    Point d'entrée du programme
+    """
     console = Console()
     ensure_save_directory_exists()
     show_options(console, no_saves, invalid_choice)
