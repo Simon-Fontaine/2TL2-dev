@@ -484,3 +484,34 @@ class Settings:
             "La chance qu'un oeuf de reine évolue doit être comprise entre 0 et 1.",
         )
         self.__queen_egg_evolve_chance = value
+
+    def to_dict(self):
+        """
+        Convertit les paramètres en dictionnaire
+        """
+        return {
+            "simulation_speed": self.simulation_speed,
+            "initial_food_quantity": self.initial_food_quantity,
+            "initial_ant_quantity": self.initial_ant_quantity,
+            "ant_avg_age": self.ant_avg_age,
+            "ant_avg_age_variation": self.ant_avg_age_variation,
+            "ant_worker_chance": self.ant_worker_chance,
+            "min_food_multiplier": self.min_food_multiplier,
+            "max_food_multiplier": self.max_food_multiplier,
+            "ant_hunger": self.ant_hunger,
+            "ant_random_death_chance": self.ant_random_death_chance,
+            "queen_avg_age": self.queen_avg_age,
+            "queen_avg_age_variation": self.queen_avg_age_variation,
+            "queen_hunger": self.queen_hunger,
+            "queen_laying_rate": self.queen_laying_rate,
+            "queen_avg_eggs": self.queen_avg_eggs,
+            "queen_avg_egg_variation": self.queen_avg_egg_variation,
+            "egg_avg_age": self.egg_avg_age,
+            "egg_avg_age_variation": self.egg_avg_age_variation,
+            "egg_hunger": self.egg_hunger,
+            "egg_evolve_chance": self.egg_evolve_chance,
+            "queen_avg_egg_age": self.queen_avg_egg_age,
+            "queen_avg_egg_age_variation": self.queen_avg_egg_age_variation,
+            "queen_egg_hunger": self.queen_egg_hunger,
+            "queen_egg_evolve_chance": self.queen_egg_evolve_chance,
+        }

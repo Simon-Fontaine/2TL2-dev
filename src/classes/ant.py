@@ -119,6 +119,14 @@ class Ant:
         """
         return self.__is_worker == Job.WORKER
 
+    @is_worker.setter
+    def is_worker(self, value: Job):
+        """
+        Modifie le job de la fourmi
+        """
+        self.__check_type(value, Job, "Le job doit être un Job")
+        self.__is_worker = value
+
     def evolve(self):
         """
         Fait évoluer la fourmi
@@ -133,3 +141,14 @@ class Ant:
                 self.__state = State.DEAD
         else:
             self.__state = State.DEAD
+
+    def to_dict(self):
+        """
+        Convertit la fourmi en dictionnaire
+        """
+        return {
+            "age": self.age,
+            "max_age": self.max_age,
+            "state": self.state.value,
+            "is_worker": self.is_worker,
+        }

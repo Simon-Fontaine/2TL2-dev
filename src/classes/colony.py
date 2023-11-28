@@ -13,6 +13,10 @@ from src.classes.queen import Queen
 
 
 class Colony:
+    """
+    Classe représentant une colonie
+    """
+
     def __init__(self, settings: Settings, food: Food):
         self.__day = 0
         self.__ants = [
@@ -99,17 +103,32 @@ class Colony:
         )
 
     def __update_ants(self):
-        successor_egg = self.__queen.evolve()
-        if successor_egg:
-            self.__eggs.append(successor_egg)
+        self.__queen.evolve()
+        if self.__queen.is_alive and self.__queen.age >= self.__queen.max_age - 1:
+            self.__lay_successor_egg()
 
         for ant in self.__ants:
             ant.evolve()
         self.__ants = [ant for ant in self.__ants if ant.is_alive]
 
+    def __lay_successor_egg(self):
+        if self.__queen.is_alive and self.food.quantity >= self.settings.queen_hunger:
+            self.food.remove(self.settings.queen_hunger)
+            self.__eggs.append(Egg(self.settings, self.food, is_queen_egg=True))
+
     def __lay_eggs(self):
         if self.__day % self.__settings.queen_laying_rate == 0:
-            self.__eggs.extend(self.__queen.lay_eggs())
+            if self.queen.is_alive and self.food.quantity >= self.settings.queen_hunger:
+                self.food.remove(self.settings.queen_hunger)
+                for _ in range(
+                    random.randint(
+                        self.settings.queen_avg_eggs
+                        - self.settings.queen_avg_egg_variation,
+                        self.settings.queen_avg_eggs
+                        + self.settings.queen_avg_egg_variation,
+                    )
+                ):
+                    self.__eggs.append(Egg(self.settings, self.food))
 
     def __update_eggs(self):
         new_queen = None
@@ -135,3 +154,15 @@ class Colony:
         self.__update_eggs()
         self.__lay_eggs()
         self.__day += 1
+
+    def to_dict(self):
+        """
+        Convertit la colonie en dictionnaire
+        """
+        return {
+            "day": self.day,
+            "queen": self.queen.to_dict(),
+            "food": self.food.to_dict(),
+            "ants": [ant.to_dict() for ant in self.ants],
+            "eggs": [egg.to_dict() for egg in self.eggs],
+        }

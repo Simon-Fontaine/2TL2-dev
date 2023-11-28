@@ -141,3 +141,14 @@ class Egg:
         else:
             self.__state = State.DEAD
         return None
+
+    def to_dict(self):
+        """
+        Convertit l'oeuf en dictionnaire
+        """
+        return {
+            "age": self.age,
+            "max_age": self.max_age,
+            "state": self.state.value,
+            "is_queen_egg": self.is_queen_egg,
+        }

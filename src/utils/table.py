@@ -10,8 +10,8 @@ def create_table(
     title: str = None,
     title_style: str = "bold magenta",
     header_style: str = "bold cyan",
-    column_styles: tuple(str) = ("bold blue", "yellow"),
-    rows: list(list(str)) = None,
+    column_styles=("bold blue", "yellow"),
+    rows=None,
     min_width: int = 60,
 ) -> Table:
     """

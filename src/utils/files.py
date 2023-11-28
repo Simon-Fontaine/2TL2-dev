@@ -8,7 +8,6 @@ import datetime
 from typing import List
 
 from src.classes.settings import SAVE_DIRECTORY
-from src.classes.settings import Settings
 from src.classes.colony import Colony
 
 
@@ -51,7 +50,7 @@ def load_save_file(unique_id: str) -> dict:
         return json.load(file)["settings"]
 
 
-def create_save_file(settings: Settings, colony: Colony) -> str:
+def create_save_file(colony: Colony) -> str:
     """
     Crée un fichier de sauvegarde
     """
@@ -62,11 +61,11 @@ def create_save_file(settings: Settings, colony: Colony) -> str:
     with open(file_path, "w", encoding="utf8") as file:
         json.dump(
             {
-                "settings": settings.__dict__,
-                "colony": colony.__dict__,
+                "settings": colony.settings.to_dict(),
+                "colony": colony.to_dict(),
             },
             file,
-            indent=4,
+            indent=2,
         )
 
     return unique_id

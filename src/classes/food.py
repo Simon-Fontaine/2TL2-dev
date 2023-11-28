@@ -38,3 +38,9 @@ class Food:
         Ajoute de la nourriture
         """
         self.__quantity += amount
+
+    def to_dict(self):
+        """
+        Convertit la nourriture en dictionnaire
+        """
+        return {"quantity": self.quantity}

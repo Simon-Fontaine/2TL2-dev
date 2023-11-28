@@ -25,14 +25,18 @@
     "queen_egg_hunger": 1,
     "queen_egg_evolve_chance": 0.5
   },
-  "results": {
-    "total_time": "~ 4 years, 11 months, 2 weeks, 4 days",
-    "days": 1808,
-    "eggs": 0,
-    "ants": 0,
-    "workers": 0,
-    "food": 5655557.1,
-    "queen": false,
-    "dead_ants": 149920
+  "colony": {
+    "day": 5409,
+    "queen": {
+      "age": 1565,
+      "max_age": 1565,
+      "state": 0,
+      "is_worker": false
+    },
+    "food": {
+      "quantity": 17429263.19273223
+    },
+    "ants": [],
+    "eggs": []
   }
 }
