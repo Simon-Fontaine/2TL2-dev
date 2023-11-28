@@ -10,8 +10,6 @@ from src.classes.enums import State, Job
 
 from src.classes.ant import Ant
 
-# from src.classes.egg import Egg
-
 
 class Queen(Ant):
     """
