@@ -36,19 +36,31 @@ class Egg:
         self.__settings = settings
         self.__food = food
 
-    def __check_positive(self, value: float, error_message: str):
+    def __validate_value(
+        self,
+        value,
+        value_type,
+        error_message="Invalid value",
+        min_value=None,
+        max_value=None,
+    ):
         """
-        Vérifie que la valeur est positive.
-        """
-        if value < 0:
-            raise ValueError(error_message)
-
-    def __check_type(self, value: float, value_type: type, error_message: str):
-        """
-        Vérifie que la valeur est du bon type.
+        Valide une valeur. Vérifie le type et la plage de la valeur si c'est numérique.
         """
         if not isinstance(value, value_type):
-            raise TypeError(error_message)
+            raise TypeError(
+                f"{error_message}: Expected type {value_type}, got {type(value)} instead."
+            )
+
+        if isinstance(value, (int, float)):
+            if min_value is not None and value < min_value:
+                raise ValueError(
+                    f"{error_message}: Value {value} is less than minimum allowed {min_value}."
+                )
+            if max_value is not None and value > max_value:
+                raise ValueError(
+                    f"{error_message}: Value {value} is greater than maximum allowed {max_value}."
+                )
 
     @property
     def age(self) -> int:
@@ -62,8 +74,12 @@ class Egg:
         """
         Modifie l'age de l'oeuf
         """
-        self.__check_type(value, int, "L'age doit être un entier")
-        self.__check_positive(value, "L'age ne peut pas être négatif")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="L'age ne peut pas être négatif",
+        )
         self.__age = value
 
     @property
@@ -78,8 +94,12 @@ class Egg:
         """
         Modifie l'age maximum de l'oeuf
         """
-        self.__check_type(value, int, "L'age maximum doit être un entier")
-        self.__check_positive(value, "L'age maximum ne peut pas être négatif")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="L'age maximum ne peut pas être négatif",
+        )
         self.__max_age = value
 
     @property
@@ -94,7 +114,7 @@ class Egg:
         """
         Modifie l'etat de l'oeuf
         """
-        self.__check_type(value, State, "L'etat doit être une valeur de l'enum State")
+        self.__validate_value(value, State, "L'etat doit être un State")
         self.__state = value
 
     @property
@@ -109,7 +129,7 @@ class Egg:
         """
         Modifie si l'oeuf est une reine ou non
         """
-        self.__check_type(value, bool, "L'oeuf doit être une reine ou non")
+        self.__validate_value(value, bool, "is_queen_egg doit être un booléen")
         self.__is_queen_egg = value
 
     @property

@@ -16,16 +16,21 @@ from src.utils.files import list_save_files, load_save_file
 from src.utils.run_simulation import run_simulation
 
 
-def main(no_saves=False):
+def main(no_saves=False, error_message: str = None):
     """
     Fonction principale
     """
     console = Console()
 
-    user_choice = prompt_options(console, no_saves)
+    user_choice = prompt_options(console, no_saves, error_message)
 
     if user_choice == "1":
-        settings = prompt_initial_settings(console)
+        try:
+            settings = prompt_initial_settings(console)
+        except ValueError as error:
+            return main(error_message=str(error))
+        except TypeError as error:
+            return main(error_message=str(error))
 
         if run_simulation(console, settings):
             return main()
@@ -40,8 +45,15 @@ def main(no_saves=False):
         if file == "back":
             return main()
 
-        settings = load_save_file(file)
-        if run_simulation(console, Settings(**settings)):
+        raw_settings = load_save_file(file)
+        try:
+            settings = Settings(**raw_settings)
+        except ValueError as error:
+            return main(error_message=str(error))
+        except TypeError as error:
+            return main(error_message=str(error))
+
+        if run_simulation(console, settings):
             return main()
         return sys.exit()
     if user_choice == "3":

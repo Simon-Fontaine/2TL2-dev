@@ -29,8 +29,66 @@ def prompt_initial_settings(console: Console) -> Settings:
     initial_ant_quantity = IntPrompt.ask(
         "Initial ant quantity", default=default_settings.initial_ant_quantity
     )
-    initial_food_quantity = IntPrompt.ask(
+    initial_food_quantity = FloatPrompt.ask(
         "Initial food quantity", default=default_settings.initial_food_quantity
+    )
+    ant_avg_age = IntPrompt.ask("Average ant age", default=default_settings.ant_avg_age)
+    ant_avg_age_variation = IntPrompt.ask(
+        "Average ant age variation", default=default_settings.ant_avg_age_variation
+    )
+    ant_worker_chance = FloatPrompt.ask(
+        "Ant worker chance", default=default_settings.ant_worker_chance
+    )
+    min_food_multiplier = FloatPrompt.ask(
+        "Minimum food multiplier", default=default_settings.min_food_multiplier
+    )
+    max_food_multiplier = FloatPrompt.ask(
+        "Maximum food multiplier", default=default_settings.max_food_multiplier
+    )
+    ant_hunger = FloatPrompt.ask("Ant hunger", default=default_settings.ant_hunger)
+    ant_random_death_chance = FloatPrompt.ask(
+        "Ant random death chance", default=default_settings.ant_random_death_chance
+    )
+    queen_avg_age = IntPrompt.ask(
+        "Average queen age", default=default_settings.queen_avg_age
+    )
+    queen_avg_age_variation = IntPrompt.ask(
+        "Average queen age variation",
+        default=default_settings.queen_avg_age_variation,
+    )
+    queen_hunger = FloatPrompt.ask(
+        "Queen hunger", default=default_settings.queen_hunger
+    )
+    queen_laying_rate = IntPrompt.ask(
+        "Queen laying rate", default=default_settings.queen_laying_rate
+    )
+    queen_avg_eggs = IntPrompt.ask(
+        "Average queen eggs", default=default_settings.queen_avg_eggs
+    )
+    queen_avg_egg_variation = IntPrompt.ask(
+        "Average queen egg variation",
+        default=default_settings.queen_avg_egg_variation,
+    )
+    egg_avg_age = IntPrompt.ask("Average egg age", default=default_settings.egg_avg_age)
+    egg_avg_age_variation = IntPrompt.ask(
+        "Average egg age variation", default=default_settings.egg_avg_age_variation
+    )
+    egg_hunger = FloatPrompt.ask("Egg hunger", default=default_settings.egg_hunger)
+    egg_evolve_chance = FloatPrompt.ask(
+        "Egg evolve chance", default=default_settings.egg_evolve_chance
+    )
+    queen_avg_egg_age = IntPrompt.ask(
+        "Average queen egg age", default=default_settings.queen_avg_egg_age
+    )
+    queen_avg_egg_age_variation = IntPrompt.ask(
+        "Average queen egg age variation",
+        default=default_settings.queen_avg_egg_age_variation,
+    )
+    queen_egg_hunger = FloatPrompt.ask(
+        "Queen egg hunger", default=default_settings.queen_egg_hunger
+    )
+    queen_egg_evolve_chance = FloatPrompt.ask(
+        "Queen egg evolve chance", default=default_settings.queen_egg_evolve_chance
     )
 
     return Settings(
@@ -38,10 +96,33 @@ def prompt_initial_settings(console: Console) -> Settings:
         simulation_speed=simulation_speed,
         initial_ant_quantity=initial_ant_quantity,
         initial_food_quantity=initial_food_quantity,
+        ant_avg_age=ant_avg_age,
+        ant_avg_age_variation=ant_avg_age_variation,
+        ant_worker_chance=ant_worker_chance,
+        min_food_multiplier=min_food_multiplier,
+        max_food_multiplier=max_food_multiplier,
+        ant_hunger=ant_hunger,
+        ant_random_death_chance=ant_random_death_chance,
+        queen_avg_age=queen_avg_age,
+        queen_avg_age_variation=queen_avg_age_variation,
+        queen_hunger=queen_hunger,
+        queen_laying_rate=queen_laying_rate,
+        queen_avg_eggs=queen_avg_eggs,
+        queen_avg_egg_variation=queen_avg_egg_variation,
+        egg_avg_age=egg_avg_age,
+        egg_avg_age_variation=egg_avg_age_variation,
+        egg_hunger=egg_hunger,
+        egg_evolve_chance=egg_evolve_chance,
+        queen_avg_egg_age=queen_avg_egg_age,
+        queen_avg_egg_age_variation=queen_avg_egg_age_variation,
+        queen_egg_hunger=queen_egg_hunger,
+        queen_egg_evolve_chance=queen_egg_evolve_chance,
     )
 
 
-def prompt_options(console: Console, no_saves: bool = False) -> str:
+def prompt_options(
+    console: Console, no_saves: bool = False, error_message: str = None
+) -> str:
     """
     Demande les options
     """
@@ -54,6 +135,15 @@ def prompt_options(console: Console, no_saves: bool = False) -> str:
             "Options",
         )
     )
+
+    if error_message:
+        console.print(
+            create_panel(
+                error_message,
+                "red",
+                "Error",
+            )
+        )
 
     if no_saves:
         console.print(

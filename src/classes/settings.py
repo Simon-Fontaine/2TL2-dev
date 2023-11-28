@@ -16,7 +16,7 @@ class Settings:
         self,
         simulation_seed: int = 1234,
         simulation_speed: float = 1.0,
-        initial_food_quantity: float = 30000,
+        initial_food_quantity: float = 30000.0,
         initial_ant_quantity: int = 100,
         ant_avg_age: int = 90,
         ant_avg_age_variation: int = 20,
@@ -27,7 +27,7 @@ class Settings:
         ant_random_death_chance: float = 0.01,
         queen_avg_age: int = 5 * YEAR,
         queen_avg_age_variation: int = 1 * YEAR,
-        queen_hunger: float = 10,
+        queen_hunger: float = 10.0,
         queen_laying_rate: int = 5,
         queen_avg_eggs: int = 500,
         queen_avg_egg_variation: int = 150,
@@ -37,54 +37,60 @@ class Settings:
         egg_evolve_chance: float = 0.9,
         queen_avg_egg_age: int = 2 * MONTH,
         queen_avg_egg_age_variation: int = 2 * WEEK,
-        queen_egg_hunger: float = 1,
+        queen_egg_hunger: float = 1.0,
         queen_egg_evolve_chance: float = 0.5,
     ):
-        self.__simulation_seed = simulation_seed
-        self.__simulation_speed = simulation_speed
-        self.__initial_food_quantity = initial_food_quantity
-        self.__initial_ant_quantity = initial_ant_quantity
-        self.__ant_avg_age = ant_avg_age
-        self.__ant_avg_age_variation = ant_avg_age_variation
-        self.__ant_worker_chance = ant_worker_chance
-        self.__min_food_multiplier = min_food_multiplier
-        self.__max_food_multiplier = max_food_multiplier
-        self.__ant_hunger = ant_hunger
-        self.__ant_random_death_chance = ant_random_death_chance
-        self.__queen_avg_age = queen_avg_age
-        self.__queen_avg_age_variation = queen_avg_age_variation
-        self.__queen_hunger = queen_hunger
-        self.__queen_laying_rate = queen_laying_rate
-        self.__queen_avg_eggs = queen_avg_eggs
-        self.__queen_avg_egg_variation = queen_avg_egg_variation
-        self.__egg_avg_age = egg_avg_age
-        self.__egg_avg_age_variation = egg_avg_age_variation
-        self.__egg_hunger = egg_hunger
-        self.__egg_evolve_chance = egg_evolve_chance
-        self.__queen_avg_egg_age = queen_avg_egg_age
-        self.__queen_avg_egg_age_variation = queen_avg_egg_age_variation
-        self.__queen_egg_hunger = queen_egg_hunger
-        self.__queen_egg_evolve_chance = queen_egg_evolve_chance
+        self.simulation_seed = simulation_seed
+        self.simulation_speed = simulation_speed
+        self.initial_food_quantity = initial_food_quantity
+        self.initial_ant_quantity = initial_ant_quantity
+        self.ant_avg_age = ant_avg_age
+        self.ant_avg_age_variation = ant_avg_age_variation
+        self.ant_worker_chance = ant_worker_chance
+        self.min_food_multiplier = min_food_multiplier
+        self.max_food_multiplier = max_food_multiplier
+        self.ant_hunger = ant_hunger
+        self.ant_random_death_chance = ant_random_death_chance
+        self.queen_avg_age = queen_avg_age
+        self.queen_avg_age_variation = queen_avg_age_variation
+        self.queen_hunger = queen_hunger
+        self.queen_laying_rate = queen_laying_rate
+        self.queen_avg_eggs = queen_avg_eggs
+        self.queen_avg_egg_variation = queen_avg_egg_variation
+        self.egg_avg_age = egg_avg_age
+        self.egg_avg_age_variation = egg_avg_age_variation
+        self.egg_hunger = egg_hunger
+        self.egg_evolve_chance = egg_evolve_chance
+        self.queen_avg_egg_age = queen_avg_egg_age
+        self.queen_avg_egg_age_variation = queen_avg_egg_age_variation
+        self.queen_egg_hunger = queen_egg_hunger
+        self.queen_egg_evolve_chance = queen_egg_evolve_chance
 
-    def __check_positive(self, value: float, error_message: str):
-        """
-        Vérifie que la valeur est positive.
-        """
-        if value < 0:
-            raise ValueError(error_message)
-
-    def __check_between(
+    def __validate_value(
         self,
-        value: float,
-        error_message: str,
-        min_value: float = 0,
-        max_value: float = 0,
+        value,
+        value_type,
+        error_message="Invalid value",
+        min_value=None,
+        max_value=None,
     ):
         """
-        Vérifie que la valeur est entre deux valeurs.
+        Valide une valeur. Vérifie le type et la plage de la valeur si c'est numérique.
         """
-        if value < min_value or value > max_value:
-            raise ValueError(error_message)
+        if not isinstance(value, value_type):
+            raise TypeError(
+                f"{error_message}: Expected type {value_type}, got {type(value)} instead."
+            )
+
+        if isinstance(value, (int, float)):
+            if min_value is not None and value < min_value:
+                raise ValueError(
+                    f"{error_message}: Value {value} is less than minimum allowed {min_value}."
+                )
+            if max_value is not None and value > max_value:
+                raise ValueError(
+                    f"{error_message}: Value {value} is greater than maximum allowed {max_value}."
+                )
 
     @property
     def simulation_seed(self) -> int:
@@ -98,7 +104,12 @@ class Settings:
         """
         Modifie la graine de la simulation.
         """
-        self.__check_positive(value, "La graine de la simulation doit être positive.")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Simulation seed must be a positive integer",
+        )
         self.__simulation_seed = value
 
     @property
@@ -113,7 +124,12 @@ class Settings:
         """
         Modifie la vitesse de la simulation.
         """
-        self.__check_positive(value, "La vitesse de la simulation doit être positive.")
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Simulation speed must be a positive float",
+        )
         self.__simulation_speed = value
 
     @property
@@ -128,8 +144,11 @@ class Settings:
         """
         Modifie la quantité de nourriture initiale.
         """
-        self.__check_positive(
-            value, "La quantité de nourriture initiale doit être positive."
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Initial food quantity must be a positive float",
         )
         self.__initial_food_quantity = value
 
@@ -145,8 +164,11 @@ class Settings:
         """
         Modifie la quantité de fourmis initiale.
         """
-        self.__check_positive(
-            value, "La quantité de fourmis initiale doit être positive."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Initial ant quantity must be a positive integer",
         )
         self.__initial_ant_quantity = value
 
@@ -162,7 +184,12 @@ class Settings:
         """
         Modifie l'age moyen des fourmis.
         """
-        self.__check_positive(value, "L'age moyen des fourmis doit être positif.")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Ant average age must be a positive integer",
+        )
         self.__ant_avg_age = value
 
     @property
@@ -177,8 +204,11 @@ class Settings:
         """
         Modifie la variation de l'age moyen des fourmis.
         """
-        self.__check_positive(
-            value, "La variation de l'age moyen des fourmis doit être positive."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Ant average age variation must be a positive integer",
         )
         self.__ant_avg_age_variation = value
 
@@ -194,9 +224,12 @@ class Settings:
         """
         Modifie la chance qu'une fourmi soit une ouvrière.
         """
-        self.__check_between(
+        self.__validate_value(
             value,
-            "La chance qu'une fourmi soit une ouvrière doit être comprise entre 0 et 1.",
+            float,
+            min_value=0.0,
+            max_value=1.0,
+            error_message="Ant worker chance must be a float between 0 and 1",
         )
         self.__ant_worker_chance = value
 
@@ -212,9 +245,11 @@ class Settings:
         """
         Modifie le multiplicateur de la quantité de nourriture minimum.
         """
-        self.__check_positive(
+        self.__validate_value(
             value,
-            "Le multiplicateur de la quantité de nourriture minimum doit être positif.",
+            float,
+            min_value=0.0,
+            error_message="Minimum food multiplier must be a positive float",
         )
         self.__min_food_multiplier = value
 
@@ -230,9 +265,11 @@ class Settings:
         """
         Modifie le multiplicateur de la quantité de nourriture maximum.
         """
-        self.__check_positive(
+        self.__validate_value(
             value,
-            "Le multiplicateur de la quantité de nourriture maximum doit être positif.",
+            float,
+            min_value=0.0,
+            error_message="Maximum food multiplier must be a positive float",
         )
         self.__max_food_multiplier = value
 
@@ -248,7 +285,12 @@ class Settings:
         """
         Modifie la faim des fourmis.
         """
-        self.__check_positive(value, "La faim des fourmis doit être positive.")
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Ant hunger must be a positive float",
+        )
         self.__ant_hunger = value
 
     @property
@@ -263,9 +305,12 @@ class Settings:
         """
         Modifie la chance qu'une fourmi meurt aléatoirement.
         """
-        self.__check_between(
+        self.__validate_value(
             value,
-            "La chance qu'une fourmi meurt aléatoirement doit être comprise entre 0 et 1.",
+            float,
+            min_value=0.0,
+            max_value=1.0,
+            error_message="Ant random death chance must be a float between 0 and 1",
         )
         self.__ant_random_death_chance = value
 
@@ -281,7 +326,12 @@ class Settings:
         """
         Modifie l'age moyen de la reine.
         """
-        self.__check_positive(value, "L'age moyen de la reine doit être positif.")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Queen average age must be a positive integer",
+        )
         self.__queen_avg_age = value
 
     @property
@@ -296,8 +346,11 @@ class Settings:
         """
         Modifie la variation de l'age moyen de la reine.
         """
-        self.__check_positive(
-            value, "La variation de l'age moyen de la reine doit être positive."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Queen average age variation must be a positive integer",
         )
         self.__queen_avg_age_variation = value
 
@@ -313,7 +366,12 @@ class Settings:
         """
         Modifie la faim de la reine.
         """
-        self.__check_positive(value, "La faim de la reine doit être positive.")
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Queen hunger must be a positive float",
+        )
         self.__queen_hunger = value
 
     @property
@@ -328,9 +386,11 @@ class Settings:
         """
         Modifie le nombre de jours entre chaque ponte de la reine.
         """
-        self.__check_positive(
+        self.__validate_value(
             value,
-            "Le nombre de jours entre chaque ponte de la reine doit être positif.",
+            int,
+            min_value=0,
+            error_message="Queen laying rate must be a positive integer",
         )
         self.__queen_laying_rate = value
 
@@ -346,8 +406,11 @@ class Settings:
         """
         Modifie le nombre moyen d'oeufs pondus par la reine.
         """
-        self.__check_positive(
-            value, "Le nombre moyen d'oeufs pondus par la reine doit être positif."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Queen average eggs must be a positive integer",
         )
         self.__queen_avg_eggs = value
 
@@ -363,9 +426,11 @@ class Settings:
         """
         Modifie la variation du nombre moyen d'oeufs pondus par la reine.
         """
-        self.__check_positive(
+        self.__validate_value(
             value,
-            "La variation du nombre moyen d'oeufs pondus par la reine doit être positive.",
+            int,
+            min_value=0,
+            error_message="Queen average egg variation must be a positive integer",
         )
         self.__queen_avg_egg_variation = value
 
@@ -381,7 +446,12 @@ class Settings:
         """
         Modifie l'age moyen des oeufs.
         """
-        self.__check_positive(value, "L'age moyen des oeufs doit être positif.")
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Egg average age must be a positive integer",
+        )
         self.__egg_avg_age = value
 
     @property
@@ -396,8 +466,11 @@ class Settings:
         """
         Modifie la variation de l'age moyen des oeufs.
         """
-        self.__check_positive(
-            value, "La variation de l'age moyen des oeufs doit être positive."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Egg average age variation must be a positive integer",
         )
         self.__egg_avg_age_variation = value
 
@@ -413,7 +486,12 @@ class Settings:
         """
         Modifie la faim des oeufs.
         """
-        self.__check_positive(value, "La faim des oeufs doit être positive.")
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Egg hunger must be a positive float",
+        )
         self.__egg_hunger = value
 
     @property
@@ -428,10 +506,13 @@ class Settings:
         """
         Modifie la chance qu'un oeuf évolue.
         """
-        if value < 0 or value > 1:
-            raise ValueError(
-                "La chance qu'un oeuf évolue doit être comprise entre 0 et 1."
-            )
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            max_value=1.0,
+            error_message="Egg evolve chance must be a float between 0 and 1",
+        )
         self.__egg_evolve_chance = value
 
     @property
@@ -446,8 +527,11 @@ class Settings:
         """
         Modifie l'age moyen des oeufs de reine.
         """
-        self.__check_positive(
-            value, "L'age moyen des oeufs de reine doit être positif."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Queen average egg age must be a positive integer",
         )
         self.__queen_avg_egg_age = value
 
@@ -463,8 +547,11 @@ class Settings:
         """
         Modifie la variation de l'age moyen des oeufs de reine.
         """
-        self.__check_positive(
-            value, "La variation de l'age moyen des oeufs de reine doit être positive."
+        self.__validate_value(
+            value,
+            int,
+            min_value=0,
+            error_message="Queen average egg age variation must be a positive integer",
         )
         self.__queen_avg_egg_age_variation = value
 
@@ -480,7 +567,12 @@ class Settings:
         """
         Modifie la faim des oeufs de reine.
         """
-        self.__check_positive(value, "La faim des oeufs de reine doit être positive.")
+        self.__validate_value(
+            value,
+            float,
+            min_value=0.0,
+            error_message="Queen egg hunger must be a positive float",
+        )
         self.__queen_egg_hunger = value
 
     @property
@@ -495,9 +587,12 @@ class Settings:
         """
         Modifie la chance qu'un oeuf de reine évolue.
         """
-        self.__check_between(
+        self.__validate_value(
             value,
-            "La chance qu'un oeuf de reine évolue doit être comprise entre 0 et 1.",
+            float,
+            min_value=0.0,
+            max_value=1.0,
+            error_message="Queen egg evolve chance must be a float between 0 and 1",
         )
         self.__queen_egg_evolve_chance = value
 
