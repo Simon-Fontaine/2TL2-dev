@@ -2,6 +2,7 @@
 Fichier permettant de démarrer une simulation
 """
 import time
+import random
 
 from rich.live import Live
 from rich.console import Console
@@ -36,6 +37,8 @@ def run_simulation(console: Console, settings: Settings) -> bool:
     if not Confirm.ask("Start simulation?"):
         return True
 
+    random.seed(settings.simulation_seed)
+
     sim_food = Food(settings)
     sim_colony = Colony(settings, sim_food)
 
@@ -66,7 +69,7 @@ def run_simulation(console: Console, settings: Settings) -> bool:
         create_panel(
             "Simulation completed. The results are displayed above.",
             "green",
-            "Success",
+            "Ended",
         )
     )
 
@@ -76,7 +79,7 @@ def run_simulation(console: Console, settings: Settings) -> bool:
         create_panel(
             f"Simulation saved at: saves/sim_{unique_id}.json",
             "green",
-            "Success",
+            "Saved",
         )
     )
 

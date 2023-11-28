@@ -1,7 +1,6 @@
 """
 Ce module contient la classe Settings.
 """
-
 YEAR = 365
 MONTH = YEAR // 12
 WEEK = MONTH // 4
@@ -15,6 +14,7 @@ class Settings:
 
     def __init__(
         self,
+        simulation_seed: int = 1234,
         simulation_speed: float = 1.0,
         initial_food_quantity: float = 30000,
         initial_ant_quantity: int = 100,
@@ -40,6 +40,7 @@ class Settings:
         queen_egg_hunger: float = 1,
         queen_egg_evolve_chance: float = 0.5,
     ):
+        self.__simulation_seed = simulation_seed
         self.__simulation_speed = simulation_speed
         self.__initial_food_quantity = initial_food_quantity
         self.__initial_ant_quantity = initial_ant_quantity
@@ -84,6 +85,21 @@ class Settings:
         """
         if value < min_value or value > max_value:
             raise ValueError(error_message)
+
+    @property
+    def simulation_seed(self) -> int:
+        """
+        Graine de la simulation.
+        """
+        return self.__simulation_seed
+
+    @simulation_seed.setter
+    def simulation_seed(self, value: int):
+        """
+        Modifie la graine de la simulation.
+        """
+        self.__check_positive(value, "La graine de la simulation doit être positive.")
+        self.__simulation_seed = value
 
     @property
     def simulation_speed(self) -> float:
@@ -490,6 +506,7 @@ class Settings:
         Convertit les paramètres en dictionnaire
         """
         return {
+            "simulation_seed": self.simulation_seed,
             "simulation_speed": self.simulation_speed,
             "initial_food_quantity": self.initial_food_quantity,
             "initial_ant_quantity": self.initial_ant_quantity,

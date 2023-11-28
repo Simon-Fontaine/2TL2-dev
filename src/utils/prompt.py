@@ -2,6 +2,8 @@
 Ce module contient les fonctions permettant de prompt l'utilisateur
 """
 
+import time
+
 from rich.console import Console
 from rich.prompt import IntPrompt, FloatPrompt, Prompt
 
@@ -17,7 +19,10 @@ def prompt_initial_settings(console: Console) -> Settings:
     console.clear()
     default_settings = Settings()
 
-    initial_simulation_speed = FloatPrompt.ask(
+    simulation_seed = IntPrompt.ask(
+        "Simulation seed (0 for random)", default=default_settings.simulation_seed
+    )
+    simulation_speed = FloatPrompt.ask(
         "Initial simulation speed (in seconds)",
         default=default_settings.simulation_speed,
     )
@@ -29,7 +34,8 @@ def prompt_initial_settings(console: Console) -> Settings:
     )
 
     return Settings(
-        simulation_speed=initial_simulation_speed,
+        simulation_seed=simulation_seed if simulation_seed != 0 else int(time.time()),
+        simulation_speed=simulation_speed,
         initial_ant_quantity=initial_ant_quantity,
         initial_food_quantity=initial_food_quantity,
     )
