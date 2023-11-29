@@ -4,8 +4,10 @@ Ce module contient la classe Colony
 
 import random
 
+
 from src.classes.food import Food
 from src.classes.settings import Settings
+from src.classes.enums import Job
 
 from src.classes.ant import Ant
 from src.classes.egg import Egg
@@ -86,7 +88,9 @@ class Colony:
         """
         Nombre d'ouvrières
         """
-        return len([worker for worker in self.__ants if worker.is_worker])
+        return len(
+            [worker for worker in self.__ants if worker.profession == Job.WORKER]
+        )
 
     def egg_count(self) -> int:
         """

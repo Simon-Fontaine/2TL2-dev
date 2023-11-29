@@ -21,7 +21,7 @@ class Ant:
             settings.ant_avg_age + settings.ant_avg_age_variation,
         )
         self.__state = State.ALIVE
-        self.__is_worker = (
+        self.__profession = (
             Job.WORKER
             if random.random() < settings.ant_worker_chance
             else Job.NOT_WORKER
@@ -127,19 +127,19 @@ class Ant:
         return self.__state == State.ALIVE
 
     @property
-    def is_worker(self) -> bool:
+    def profession(self) -> bool:
         """
         Si la fourmi est une ouvrière ou non
         """
-        return self.__is_worker == Job.WORKER
+        return self.__profession
 
-    @is_worker.setter
-    def is_worker(self, value: Job):
+    @profession.setter
+    def profession(self, value: Job):
         """
         Modifie le job de la fourmi
         """
         self.__validate_value(value, Job, "Le job doit être un Job")
-        self.__is_worker = value
+        self.__profession = value
 
     def evolve(self):
         """
@@ -164,5 +164,5 @@ class Ant:
             "age": self.age,
             "max_age": self.max_age,
             "state": self.state.value,
-            "is_worker": self.is_worker,
+            "profession": "worker" if self.profession else "not_worker",
         }
